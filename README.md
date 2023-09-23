@@ -1,2 +1,0 @@
-# Surja
-LOFI MAKER

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JPG to PDF Converter</title>
+</head>
+<body>
+    <h1>JPG to PDF Converter</h1>
+    
+    <!-- Input to upload a JPG file -->
+    <input type="file" id="jpgFileInput">
+    
+    <!-- Button to trigger the conversion -->
+    <button onclick="convertToPDF()">Convert to PDF</button>
+    
+    <!-- Download link for the generated PDF -->
+    <a id="downloadLink" style="display: none">Download PDF</a>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script>
+        function convertToPDF() {
+            const jpgFileInput = document.getElementById('jpgFileInput');
+            const downloadLink = document.getElementById('downloadLink');
+
+            if (jpgFileInput.files.length === 0) {
+                alert('Please select a JPG file first.');
+                return;
+            }
+
+            const jpgFile = jpgFileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function () {
+                const imgData = reader.result;
+                const doc = new jsPDF();
+                doc.addImage(imgData, 'JPEG', 10, 10, 190, 140); // Adjust dimensions as needed
+                const pdfData = doc.output('blob');
+                const pdfUrl = URL.createObjectURL(pdfData);
+
+                downloadLink.href = pdfUrl;
+                downloadLink.download = 'converted.pdf';
+                downloadLink.style.display = 'block';
+            };
+
+            reader.readAsDataURL(jpgFile);
+        }
+    </script>
+</body>
+</html>
